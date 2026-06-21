@@ -3,6 +3,7 @@ import { fetchMarketData } from "@/lib/markets";
 import { NewsFeed } from "@/components/NewsFeed";
 import { Ticker } from "@/components/Ticker";
 import { BreakingAlertManager } from "@/components/BreakingAlertManager";
+import { MarketDashboard } from "@/components/MarketDashboard";
 
 // Revalidate this page every 5 minutes for relatively fresh market & news data
 export const revalidate = 300;
@@ -16,13 +17,20 @@ export default async function Home() {
       <BreakingAlertManager articles={articles} />
       <Ticker data={marketData} />
       
-      <div className="flex flex-col gap-6 mt-6">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">Top Stories</h1>
-          <p className="text-muted-foreground">Aggregated in real-time across India's top sources.</p>
-        </div>
-        
-        <NewsFeed initialArticles={articles} marketData={marketData} />
+      <div className="flex flex-col gap-16 mt-8">
+        {/* Primary Focus: Economics & Market Grid */}
+        <section>
+          <MarketDashboard />
+        </section>
+
+        {/* Secondary Focus: News & Geotagging */}
+        <section className="border-t border-border/50 pt-10">
+          <div className="space-y-1 mb-8">
+            <h2 className="text-3xl font-bold tracking-tight">Market News & Intelligence</h2>
+            <p className="text-muted-foreground">AI-summarized news aggregated in real-time across India.</p>
+          </div>
+          <NewsFeed initialArticles={articles} marketData={marketData} />
+        </section>
       </div>
     </div>
   );
