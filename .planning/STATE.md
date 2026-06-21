@@ -9,7 +9,7 @@ See: .planning/PROJECT.md (updated 2026-06-21)
 
 ## Phase Progress
 - **Phase 0: Scaffold** — Completed
-- **Phase 1: News Feed Core** — Not started
+- **Phase 1: News Feed Core** — Completed
 - **Phase 2: Geo Tagging & India Map** — Not started
 - **Phase 3: AI Summaries** — Not started
 - **Phase 4: Markets Panel** — Not started
