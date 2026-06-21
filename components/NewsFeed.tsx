@@ -24,7 +24,7 @@ export function NewsFeed({ initialArticles }: NewsFeedProps) {
         visibleArticles.map((article) => (
           <a
             key={article.id}
-            href={article.url}
+            href={article.link}
             target="_blank"
             rel="noopener noreferrer"
             className="group block border-l-2 border-primary/40 pl-3 py-2 hover:bg-primary/5 hover:border-primary transition-all relative"
