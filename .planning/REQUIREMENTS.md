@@ -43,4 +43,22 @@
 
 ## Traceability
 
-*(To be filled by Roadmap)*
+| Requirement | Phase |
+|-------------|-------|
+| CORE-01 | Phase 1 |
+| CORE-02 | Phase 1 |
+| CORE-03 | Phase 1 |
+| CORE-04 | Phase 1 |
+| GEO-01 | Phase 2 |
+| GEO-02 | Phase 2 |
+| GEO-03 | Phase 2 |
+| GEO-04 | Phase 2 |
+| GEO-05 | Phase 2 |
+| AI-01 | Phase 3 |
+| AI-02 | Phase 3 |
+| AI-03 | Phase 3 |
+| MKT-01 | Phase 4 |
+| MKT-02 | Phase 4 |
+| ALRT-01 | Phase 5 |
+| ALRT-02 | Phase 5 |
+| ALRT-03 | Phase 5 |
