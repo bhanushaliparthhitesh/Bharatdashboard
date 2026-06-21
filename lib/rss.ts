@@ -1,5 +1,6 @@
 import Parser from 'rss-parser';
 import { cache } from './redis';
+import { extractState } from './geo';
 
 export type Article = {
   id: string;
@@ -9,6 +10,7 @@ export type Article = {
   source: string;
   category: string;
   imageUrl?: string;
+  state?: string;
 };
 
 const parser = new Parser({
@@ -72,6 +74,7 @@ export async function fetchNewsFeed(): Promise<Article[]> {
           source: feed.source,
           category: feed.category,
           imageUrl,
+          state: extractState(item.title || '') || extractState(item.contentSnippet || item.content || ''),
         } as Article;
       });
     } catch (e) {
