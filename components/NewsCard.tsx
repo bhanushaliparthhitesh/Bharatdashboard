@@ -70,18 +70,18 @@ export function NewsCard({ article }: { article: Article }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="px-5 overflow-hidden"
+            className="px-5 overflow-hidden bg-primary/5 border-t border-primary/20"
           >
-            <div className="py-3 border-t border-muted/50 text-sm text-foreground/90 space-y-2">
-              <div className="flex items-center gap-2 font-medium text-primary mb-2">
-                <Sparkles className="h-4 w-4" /> AI Summary
+            <div className="py-4 text-sm text-foreground/90 space-y-2">
+              <div className="flex items-center gap-2 font-medium text-primary mb-3">
+                <Sparkles className="h-4 w-4 text-primary animate-pulse" /> AI Summary
               </div>
               {isPending ? (
                 <div className="flex items-center gap-2 text-muted-foreground py-2">
                   <Loader2 className="h-4 w-4 animate-spin" /> Synthesizing...
                 </div>
               ) : (
-                <div className="whitespace-pre-wrap leading-relaxed">
+                <div className="whitespace-pre-wrap leading-relaxed text-foreground/80">
                   {summary}
                 </div>
               )}

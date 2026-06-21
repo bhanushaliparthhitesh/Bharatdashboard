@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { scaleLinear } from "d3-scale";
 
@@ -15,20 +15,26 @@ interface IndiaMapProps {
 export function IndiaMap({ stateCounts, activeState, onStateSelect }: IndiaMapProps) {
   const maxCount = Math.max(...Object.values(stateCounts), 1);
   const [tooltipContent, setTooltipContent] = useState("");
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   // A sleek dark theme color scale. 
-  // Base state color: slate-800 (#1e293b), Heat max: Red-500 (#ef4444)
+  // Base state color: matched to the new OLED card background (#171717)
   const colorScale = scaleLinear<string>()
     .domain([0, maxCount])
-    .range(["#1e293b", "#ef4444"]);
+    .range(["#171717", "#ef4444"]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   return (
-    <div className="w-full relative bg-card/30 backdrop-blur-sm rounded-xl border border-muted/50 flex flex-col p-4 shadow-sm">
+    <div className="w-full relative bg-card/30 backdrop-blur-sm rounded-xl border border-border/50 flex flex-col p-4 shadow-sm group">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold text-lg text-foreground/90">India Heatmap</h3>
-        <div className="text-sm font-medium text-muted-foreground h-5">
-          {tooltipContent}
-        </div>
       </div>
       
       <div className="flex-grow flex items-center justify-center min-h-[300px] md:min-h-[500px]">
@@ -58,7 +64,7 @@ export function IndiaMap({ stateCounts, activeState, onStateSelect }: IndiaMapPr
                       setTooltipContent("");
                     }}
                     onClick={() => onStateSelect(isActive ? null : stateName)}
-                    className="cursor-pointer transition-colors outline-none focus:outline-none"
+                    className="cursor-pointer transition-all outline-none focus:outline-none"
                     style={{
                       default: {
                         fill: isActive ? "#3b82f6" : colorScale(count),
@@ -70,7 +76,8 @@ export function IndiaMap({ stateCounts, activeState, onStateSelect }: IndiaMapPr
                         fill: "#60a5fa", // lighter blue on hover
                         stroke: "#f8fafc",
                         strokeWidth: 1.5,
-                        outline: "none"
+                        outline: "none",
+                        transition: "all 200ms"
                       },
                       pressed: {
                         fill: "#2563eb",
@@ -84,6 +91,19 @@ export function IndiaMap({ stateCounts, activeState, onStateSelect }: IndiaMapPr
           </Geographies>
         </ComposableMap>
       </div>
+
+      {/* Floating Dynamic Tooltip */}
+      {tooltipContent && (
+        <div 
+          className="fixed z-50 pointer-events-none bg-black/80 backdrop-blur-md text-white px-3 py-1.5 rounded-md text-sm font-medium shadow-xl border border-white/10"
+          style={{
+            left: mousePosition.x + 15,
+            top: mousePosition.y + 15,
+          }}
+        >
+          {tooltipContent}
+        </div>
+      )}
 
       {activeState && (
         <button 
