@@ -8,13 +8,17 @@ import { IndiaMap } from "./IndiaMap";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Inbox } from "lucide-react";
 
+import { MarketData } from "@/lib/markets";
+import { MarketsPanel } from "./MarketsPanel";
+
 interface NewsFeedProps {
   initialArticles: Article[];
+  marketData: MarketData[];
 }
 
 const ITEMS_PER_PAGE = 12;
 
-export function NewsFeed({ initialArticles }: NewsFeedProps) {
+export function NewsFeed({ initialArticles, marketData }: NewsFeedProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeState, setActiveState] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -132,9 +136,11 @@ export function NewsFeed({ initialArticles }: NewsFeedProps) {
         )}
       </div>
 
-      {/* Side Panel: India Map */}
+      {/* Side Panel: Markets & Map */}
       <div className="w-full lg:w-1/3 flex flex-col gap-6 lg:mt-[72px]">
-        <div className="sticky top-20">
+        <div className="sticky top-20 flex flex-col gap-6">
+          <MarketsPanel data={marketData} />
+          
           <IndiaMap 
             stateCounts={stateCounts}
             activeState={activeState}
