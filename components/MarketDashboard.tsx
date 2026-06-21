@@ -21,22 +21,21 @@ export function MarketDashboard() {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col w-full gap-6">
+    <div className="flex flex-col w-full gap-4">
       <div className="flex items-center justify-between mb-2">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">Market Terminal</h1>
-          <p className="text-muted-foreground">Customize your macro and micro economics dashboard.</p>
+        <div className="text-[10px] text-muted-foreground uppercase tracking-widest">
+          Tracking {tickers.length} Assets
         </div>
         <button 
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-lg font-medium transition-colors shadow-lg shadow-primary/20"
+          className="flex items-center gap-1 bg-transparent border border-primary text-primary hover:bg-primary/20 px-2 py-1 rounded-sm text-xs font-bold tracking-widest transition-colors shadow-[0_0_5px_rgba(34,197,94,0.3)]"
         >
-          <Plus className="h-4 w-4" />
-          <span className="hidden sm:inline">Add Graph</span>
+          <Plus className="h-3 w-3" />
+          <span>ADD_ASSET</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="flex flex-col gap-4">
         {tickers.map((ticker) => (
           <DetailedChart key={ticker.symbol} symbol={ticker.symbol} name={ticker.name} />
         ))}

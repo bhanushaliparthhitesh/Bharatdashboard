@@ -1,6 +1,8 @@
 "use server";
 
-import yahooFinance from "yahoo-finance2";
+// In yahoo-finance2 v3, the default export is a Class that must be instantiated.
+const YahooFinance = require("yahoo-finance2").default;
+const yahooFinance = new YahooFinance({ suppressNotices: ['yahooSurvey'] });
 
 export type TimeRange = "1d" | "5d" | "1mo" | "3mo" | "6mo" | "1y";
 
@@ -49,12 +51,15 @@ export async function fetchFinanceData(symbol: string, range: TimeRange = "1mo")
   try {
     const quote = (await yahooFinance.quote(symbol)) as any;
     const interval = getInterval(range);
-    const period1 = getPeriod1(range);
-
-    const chartRes = (await yahooFinance.historical(symbol, {
-      period1,
+    const period1Date = getPeriod1(range);
+    // In yahoo-finance2 v3, historical() is deprecated and maps poorly to chart().
+    // We use chart() directly and pass period1 as an ISO string.
+    const chartData = (await yahooFinance.chart(symbol, {
+      period1: period1Date.toISOString(),
       interval,
-    })) as any[];
+    })) as any;
+    
+    const chartRes = chartData.quotes || [];
 
     return {
       symbol: quote.symbol,

@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 
-const inter = Inter({ subsets: ["latin"] });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const viewport: Viewport = {
   themeColor: "#0A0A0A",
@@ -48,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} min-h-screen bg-background antialiased text-foreground`}>
+      <body className={`${mono.variable} font-mono bg-black text-white antialiased selection:bg-green-500/30 overflow-hidden`}>
         <Header />
         <main className="container max-w-screen-2xl mx-auto px-4 py-6">
           {children}

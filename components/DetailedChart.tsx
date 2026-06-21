@@ -35,17 +35,18 @@ export function DetailedChart({ symbol, name }: DetailedChartProps) {
 
   if (loading && !data) {
     return (
-      <div className="flex flex-col items-center justify-center h-[300px] bg-card border border-border/50 rounded-xl">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      <div className="flex flex-col items-center justify-center h-[200px] bg-black/40 border border-primary/20 rounded-sm">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        <span className="text-[10px] text-primary mt-2 uppercase tracking-widest animate-pulse">Acquiring Data...</span>
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="flex flex-col items-center justify-center h-[300px] bg-card border border-border/50 rounded-xl">
-        <p className="text-muted-foreground">Failed to load {name}</p>
-        <button onClick={() => removeTicker(symbol)} className="mt-2 text-red-500 text-sm hover:underline">Remove</button>
+      <div className="flex flex-col items-center justify-center h-[200px] bg-black/40 border border-destructive/50 rounded-sm">
+        <p className="text-destructive text-xs uppercase tracking-widest">SIGNAL LOST: {name}</p>
+        <button onClick={() => removeTicker(symbol)} className="mt-2 text-destructive/80 text-[10px] uppercase hover:text-destructive hover:underline">ABORT_TRACKING</button>
       </div>
     );
   }
@@ -55,56 +56,57 @@ export function DetailedChart({ symbol, name }: DetailedChartProps) {
   const fillColor = isPositive ? "url(#colorPositive)" : "url(#colorNegative)";
 
   return (
-    <div className="flex flex-col bg-card border border-border/50 rounded-xl overflow-hidden group">
-      <div className="p-4 flex items-start justify-between">
+    <div className="flex flex-col bg-black/60 border border-primary/20 rounded-sm overflow-hidden group relative">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+      <div className="p-3 flex items-start justify-between border-b border-primary/10">
         <div>
-          <h3 className="font-semibold text-lg text-foreground truncate max-w-[200px]">{data.name}</h3>
-          <p className="text-sm text-muted-foreground">{symbol}</p>
+          <h3 className="font-bold text-sm text-primary uppercase tracking-widest truncate max-w-[150px]">{data.name}</h3>
+          <p className="text-[10px] text-muted-foreground">{symbol}</p>
         </div>
         <div className="text-right flex flex-col items-end">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-xl">{data.price.toFixed(2)}</span>
+            <span className="font-bold text-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">{data.price.toFixed(2)}</span>
             <button 
               onClick={() => removeTicker(symbol)}
-              className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-red-500 p-1"
+              className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive/50 hover:text-destructive p-1"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3 w-3" />
             </button>
           </div>
-          <span className={`flex items-center text-sm font-medium ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+          <span className={`flex items-center text-[10px] font-bold tracking-widest ${isPositive ? 'text-primary' : 'text-destructive'}`}>
             {isPositive ? <TrendingUp className="h-3 w-3 mr-1" /> : <TrendingDown className="h-3 w-3 mr-1" />}
             {data.change > 0 ? '+' : ''}{data.change.toFixed(2)} ({data.changePercent.toFixed(2)}%)
           </span>
         </div>
       </div>
 
-      <div className="h-[200px] w-full mt-2">
+      <div className="h-[120px] w-full mt-2">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data.chart} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <defs>
-              <linearGradient id="colorPositive" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3}/>
+              <linearGradient id={`colorPositive-${symbol}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#22c55e" stopOpacity={0.4}/>
                 <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
               </linearGradient>
-              <linearGradient id="colorNegative" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
+              <linearGradient id={`colorNegative-${symbol}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.4}/>
                 <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
               </linearGradient>
             </defs>
             <Tooltip 
-              contentStyle={{ backgroundColor: '#0A0A0A', border: '1px solid #262626', borderRadius: '8px' }}
-              itemStyle={{ color: '#fff' }}
-              labelStyle={{ color: '#a3a3a3', marginBottom: '4px' }}
-              formatter={(value: any) => [typeof value === 'number' ? value.toFixed(2) : value, "Price"]}
+              contentStyle={{ backgroundColor: 'rgba(0,0,0,0.9)', border: '1px solid var(--primary)', borderRadius: '2px', fontFamily: 'monospace' }}
+              itemStyle={{ color: 'var(--primary)' }}
+              labelStyle={{ color: '#888', marginBottom: '4px', fontSize: '10px' }}
+              formatter={(value: any) => [typeof value === 'number' ? value.toFixed(2) : value, "VAL"]}
               labelFormatter={(label) => new Date(label).toLocaleDateString()}
             />
             <Area 
-              type="monotone" 
+              type="step" 
               dataKey="price" 
               stroke={strokeColor} 
-              strokeWidth={2}
+              strokeWidth={1.5}
               fillOpacity={1} 
-              fill={fillColor} 
+              fill={`url(#color${isPositive ? 'Positive' : 'Negative'}-${symbol})`} 
             />
             <YAxis domain={['auto', 'auto']} hide />
             <XAxis dataKey="date" hide />
@@ -112,12 +114,12 @@ export function DetailedChart({ symbol, name }: DetailedChartProps) {
         </ResponsiveContainer>
       </div>
 
-      <div className="flex items-center justify-center gap-2 p-2 border-t border-border/30 bg-muted/20">
+      <div className="flex items-center justify-between gap-1 p-1 border-t border-primary/10 bg-black/40">
         {(["1d", "5d", "1mo", "3mo", "6mo", "1y"] as TimeRange[]).map((r) => (
           <button
             key={r}
             onClick={() => setRange(r)}
-            className={`text-xs px-2 py-1 rounded transition-colors ${range === r ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted'}`}
+            className={`text-[9px] px-2 py-1 rounded-sm uppercase tracking-widest transition-all ${range === r ? 'bg-primary text-black font-bold shadow-[0_0_5px_rgba(34,197,94,0.5)]' : 'text-muted-foreground hover:bg-primary/10'}`}
           >
             {r}
           </button>
