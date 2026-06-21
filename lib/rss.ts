@@ -11,6 +11,7 @@ export type Article = {
   category: string;
   imageUrl?: string;
   state?: string;
+  contentSnippet?: string;
 };
 
 const parser = new Parser({
@@ -75,6 +76,7 @@ export async function fetchNewsFeed(): Promise<Article[]> {
           category: feed.category,
           imageUrl,
           state: extractState(item.title || '') || extractState(item.contentSnippet || item.content || ''),
+          contentSnippet: item.contentSnippet || item.content || '',
         } as Article;
       });
     } catch (e) {

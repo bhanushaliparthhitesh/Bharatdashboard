@@ -11,7 +11,7 @@ See: .planning/PROJECT.md (updated 2026-06-21)
 - **Phase 0: Scaffold** — Completed
 - **Phase 1: News Feed Core** — Completed
 - **Phase 2: Geo Tagging & India Map** — Completed
-- **Phase 3: AI Summaries** — Not started
+- **Phase 3: AI Summaries** — Completed
 - **Phase 4: Markets Panel** — Not started
 - **Phase 5: Breaking News Alerts** — Not started
 - **Phase 6: Polish & Launch** — Not started
