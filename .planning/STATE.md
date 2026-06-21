@@ -14,4 +14,4 @@ See: .planning/PROJECT.md (updated 2026-06-21)
 - **Phase 3: AI Summaries** — Completed
 - **Phase 4: Markets Panel** — Completed
 - **Phase 5: Breaking News Alerts** — Completed
-- **Phase 6: Polish & Launch** — Not started
+- **Phase 6: Polish & Launch** — Completed
