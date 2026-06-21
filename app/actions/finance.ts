@@ -68,10 +68,10 @@ export async function fetchFinanceData(symbol: string, range: TimeRange = "1mo")
       change: quote.regularMarketChange || 0,
       changePercent: quote.regularMarketChangePercent || 0,
       currency: quote.currency || "INR",
-      chart: chartRes.map((c) => ({
+      chart: chartRes.map((c: any) => ({
         date: c.date.toISOString(),
         price: c.close,
-      })).filter(c => c.price != null),
+      })).filter((c: any) => c.price != null),
     };
   } catch (error) {
     console.error(`Error fetching finance data for ${symbol}:`, error);
