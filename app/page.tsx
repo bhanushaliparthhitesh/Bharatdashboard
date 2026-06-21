@@ -2,6 +2,7 @@ import { fetchNewsFeed } from "@/lib/rss";
 import { fetchMarketData } from "@/lib/markets";
 import { NewsFeed } from "@/components/NewsFeed";
 import { Ticker } from "@/components/Ticker";
+import { BreakingAlertManager } from "@/components/BreakingAlertManager";
 
 // Revalidate this page every 5 minutes for relatively fresh market & news data
 export const revalidate = 300;
@@ -12,6 +13,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col w-full">
+      <BreakingAlertManager articles={articles} />
       <Ticker data={marketData} />
       
       <div className="flex flex-col gap-6 mt-6">

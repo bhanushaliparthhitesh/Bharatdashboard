@@ -1,20 +1,53 @@
 "use client";
 
-import { MapPin, Bell } from 'lucide-react';
+import { MapPin, Bell, BellRing } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 
 export function Header() {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
+  const [permission, setPermission] = useState<NotificationPermission>('default');
 
   useEffect(() => {
     setCurrentTime(new Date());
     const interval = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
+    
+    if ("Notification" in window) {
+      setPermission(Notification.permission);
+    }
+    
     return () => clearInterval(interval);
   }, []);
+
+  const handleNotificationRequest = async () => {
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notifications.");
+      return;
+    }
+
+    if (Notification.permission === "granted") {
+      // Trigger a test notification if already granted
+      const n = new Notification("Bharat Monitor Alerts Active", {
+        body: "You're all set to receive breaking news updates.",
+      });
+      n.onclick = () => window.focus();
+      return;
+    }
+
+    if (Notification.permission !== "denied") {
+      const p = await Notification.requestPermission();
+      setPermission(p);
+      if (p === "granted") {
+        const n = new Notification("Bharat Monitor", {
+          body: "Breaking news alerts activated!",
+        });
+        n.onclick = () => window.focus();
+      }
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -32,8 +65,12 @@ export function Header() {
             <button className="text-muted-foreground hover:text-primary transition-colors">
               <MapPin className="h-5 w-5" />
             </button>
-            <button className="text-muted-foreground hover:text-primary transition-colors">
-              <Bell className="h-5 w-5" />
+            <button 
+              onClick={handleNotificationRequest}
+              className={`transition-colors ${permission === 'granted' ? 'text-primary' : 'text-muted-foreground hover:text-primary'}`}
+              title="Toggle Breaking News Alerts"
+            >
+              {permission === 'granted' ? <BellRing className="h-5 w-5" /> : <Bell className="h-5 w-5" />}
             </button>
           </div>
         </div>
